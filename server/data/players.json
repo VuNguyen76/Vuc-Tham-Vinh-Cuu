@@ -1,0 +1,25 @@
+{
+  "hero_7f1dfb175bd5ea4e": {
+    "player_id": "hero_7f1dfb175bd5ea4e",
+    "name": "Dũng Sĩ Hư Không",
+    "floor": 1,
+    "weapon": "wpn_sword_1",
+    "weapon_upgrade": 0,
+    "armor": "arm_leather_1",
+    "armor_upgrade": 0,
+    "ring": "ring_copper_1",
+    "inventory": {
+      "arm_leather_1": 4,
+      "chest_wood": 2,
+      "mat_dust": 102,
+      "mat_gem": 7,
+      "mat_stone": 17,
+      "ring_copper_1": 1,
+      "wpn_sword_1": 1
+    },
+    "max_dps": 3890.26755691293,
+    "total_damage": 3890.26755691293,
+    "created_at": "2026-10-11T08:48:17.538Z",
+    "last_online": "2026-10-11T12:33:27.152Z"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "eternal-abyss-server",
+  "version": "1.0.0",
+  "description": "Dedicated Game Backend & Leaderboard Server for Eternal Abyss: Void's Legacy",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["game-server", "godot-backend", "leaderboard", "cloud-save", "eternal-abyss"],
+  "author": "QVVC Team",
+  "license": "MIT"
+}

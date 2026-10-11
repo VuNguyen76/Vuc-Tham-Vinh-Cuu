@@ -1,0 +1,75 @@
+[gd_scene load_steps=9 format=3 uid="uid://cqvvc_boss_001"]
+
+[ext_resource type="Script" path="res://scripts/boss.gd" id="1_boss_script"]
+[ext_resource type="Texture2D" path="res://assets/boss_body.png" id="2_body_tex"]
+[ext_resource type="Texture2D" path="res://assets/boss_wing_l.png" id="3_wing_l_tex"]
+[ext_resource type="Texture2D" path="res://assets/boss_wing_r.png" id="4_wing_r_tex"]
+[ext_resource type="Texture2D" path="res://assets/boss_head.png" id="5_head_tex"]
+[ext_resource type="Texture2D" path="res://assets/fx/fx_boss_core.png" id="6_void_core"]
+[ext_resource type="Texture2D" path="res://assets/fx/fx_void_claw.png" id="7_void_claw"]
+[ext_resource type="Texture2D" path="res://assets/fx/light_radial.png" id="8_light_tex"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_boss"]
+radius = 90.0
+
+[node name="Boss" type="CharacterBody2D" groups=["boss"]]
+collision_layer = 2
+collision_mask = 1
+script = ExtResource("1_boss_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_boss")
+
+[node name="Rig" type="Node2D" parent="."]
+
+[node name="LeftWingPivot" type="Node2D" parent="Rig"]
+position = Vector2(-30, -10)
+
+[node name="LeftWing" type="Sprite2D" parent="Rig/LeftWingPivot"]
+position = Vector2(30, 10)
+texture = ExtResource("3_wing_l_tex")
+
+[node name="RightWingPivot" type="Node2D" parent="Rig"]
+position = Vector2(30, -10)
+
+[node name="RightWing" type="Sprite2D" parent="Rig/RightWingPivot"]
+position = Vector2(-30, 10)
+texture = ExtResource("4_wing_r_tex")
+
+[node name="Body" type="Sprite2D" parent="Rig"]
+texture = ExtResource("2_body_tex")
+
+[node name="VoidCore" type="Sprite2D" parent="Rig"]
+position = Vector2(0, 5)
+scale = Vector2(0.85, 0.85)
+texture = ExtResource("6_void_core")
+
+[node name="LeftClawPivot" type="Node2D" parent="Rig"]
+position = Vector2(-65, 15)
+
+[node name="LeftClaw" type="Sprite2D" parent="Rig/LeftClawPivot"]
+position = Vector2(-15, 10)
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("7_void_claw")
+
+[node name="RightClawPivot" type="Node2D" parent="Rig"]
+position = Vector2(65, 15)
+
+[node name="RightClaw" type="Sprite2D" parent="Rig/RightClawPivot"]
+position = Vector2(15, 10)
+scale = Vector2(-0.55, 0.55)
+texture = ExtResource("7_void_claw")
+
+[node name="HeadPivot" type="Node2D" parent="Rig"]
+position = Vector2(0, -45)
+
+[node name="Head" type="Sprite2D" parent="Rig/HeadPivot"]
+position = Vector2(0, 45)
+texture = ExtResource("5_head_tex")
+
+[node name="BossLight" type="PointLight2D" parent="."]
+color = Color(0.85, 0.4, 1.4, 1)
+energy = 1.75
+texture = ExtResource("8_light_tex")
+texture_scale = 3.6
+

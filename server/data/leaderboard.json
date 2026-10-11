@@ -1,0 +1,56 @@
+[
+  {
+    "rank": 1,
+    "player_id": "legend_01",
+    "name": "Long Thần Chi Tôn",
+    "max_floor": 4,
+    "max_dps": 3420,
+    "total_damage": 9800000,
+    "date": "2026-10-10"
+  },
+  {
+    "rank": 2,
+    "player_id": "legend_02",
+    "name": "Hư Không Kiếm Thánh",
+    "max_floor": 4,
+    "max_dps": 2890,
+    "total_damage": 7450000,
+    "date": "2026-10-09"
+  },
+  {
+    "rank": 3,
+    "player_id": "legend_03",
+    "name": "Bóng Đêm Tử Thần",
+    "max_floor": 3,
+    "max_dps": 1950,
+    "total_damage": 4200000,
+    "date": "2026-10-08"
+  },
+  {
+    "rank": 4,
+    "player_id": "legend_04",
+    "name": "Lôi Đình Cuồng Nộ",
+    "max_floor": 3,
+    "max_dps": 1680,
+    "total_damage": 3100000,
+    "date": "2026-10-07"
+  },
+  {
+    "rank": 5,
+    "player_id": "legend_05",
+    "name": "Thánh Khiên Hộ Quốc",
+    "max_floor": 2,
+    "max_dps": 1240,
+    "total_damage": 1850000,
+    "date": "2026-10-06"
+  },
+  {
+    "player_id": "hero_7f1dfb175bd5ea4e",
+    "name": "Dũng Sĩ Hư Không",
+    "max_floor": 1,
+    "max_dps": 3890.26755691293,
+    "total_damage": 3890.26755691293,
+    "date": "2026-10-11",
+    "rank": 6
+  }
+]

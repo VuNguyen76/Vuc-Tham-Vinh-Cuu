@@ -1,0 +1,107 @@
+[gd_scene load_steps=12 format=3 uid="uid://cqvvc_main_001"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_main_script"]
+[ext_resource type="Texture2D" path="res://assets/arena_map.png" id="2_map_tex"]
+[ext_resource type="PackedScene" uid="uid://cqvvc_boss_001" path="res://scenes/boss.tscn" id="3_boss_scene"]
+[ext_resource type="PackedScene" uid="uid://cqvvc_player_001" path="res://scenes/player.tscn" id="4_player_scene"]
+[ext_resource type="PackedScene" uid="uid://cqvvc_hud_001" path="res://scenes/hud.tscn" id="5_hud_scene"]
+[ext_resource type="Texture2D" path="res://assets/fx/light_radial.png" id="6_light_tex"]
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 0.85
+glow_bloom = 0.22
+glow_blend_mode = 0
+glow_hdr_threshold = 1.15
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_top"]
+size = Vector2(1280, 120)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_bot"]
+size = Vector2(1280, 120)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_left"]
+size = Vector2(100, 720)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_right"]
+size = Vector2(100, 720)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_main_script")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_main")
+
+[node name="EnvModulate" type="CanvasModulate" parent="."]
+color = Color(0.72, 0.72, 0.82, 1)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(640, 360)
+
+[node name="Map" type="Sprite2D" parent="."]
+texture_filter = 2
+position = Vector2(640, 360)
+texture = ExtResource("2_map_tex")
+
+[node name="Torches" type="Node2D" parent="."]
+
+[node name="TorchTL" type="PointLight2D" parent="Torches"]
+position = Vector2(180, 150)
+color = Color(1, 0.76, 0.42, 1)
+energy = 1.3
+texture = ExtResource("6_light_tex")
+texture_scale = 2.6
+
+[node name="TorchTR" type="PointLight2D" parent="Torches"]
+position = Vector2(1100, 150)
+color = Color(1, 0.76, 0.42, 1)
+energy = 1.3
+texture = ExtResource("6_light_tex")
+texture_scale = 2.6
+
+[node name="TorchBL" type="PointLight2D" parent="Torches"]
+position = Vector2(180, 580)
+color = Color(1, 0.76, 0.42, 1)
+energy = 1.3
+texture = ExtResource("6_light_tex")
+texture_scale = 2.6
+
+[node name="TorchBR" type="PointLight2D" parent="Torches"]
+position = Vector2(1100, 580)
+color = Color(1, 0.76, 0.42, 1)
+energy = 1.3
+texture = ExtResource("6_light_tex")
+texture_scale = 2.6
+
+[node name="ArenaBounds" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 3
+
+[node name="WallTop" type="CollisionShape2D" parent="ArenaBounds"]
+position = Vector2(640, 50)
+shape = SubResource("RectangleShape2D_wall_top")
+
+[node name="WallBottom" type="CollisionShape2D" parent="ArenaBounds"]
+position = Vector2(640, 710)
+shape = SubResource("RectangleShape2D_wall_bot")
+
+[node name="WallLeft" type="CollisionShape2D" parent="ArenaBounds"]
+position = Vector2(40, 360)
+shape = SubResource("RectangleShape2D_wall_left")
+
+[node name="WallRight" type="CollisionShape2D" parent="ArenaBounds"]
+position = Vector2(1240, 360)
+shape = SubResource("RectangleShape2D_wall_right")
+
+[node name="Boss" parent="." instance=ExtResource("3_boss_scene")]
+position = Vector2(640, 270)
+
+[node name="Player" parent="." instance=ExtResource("4_player_scene")]
+position = Vector2(640, 530)
+
+[node name="LootLayer" type="Node2D" parent="."]
+
+[node name="TextLayer" type="Node2D" parent="."]
+
+[node name="HUD" parent="." instance=ExtResource("5_hud_scene")]

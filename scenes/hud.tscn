@@ -1,0 +1,1011 @@
+[gd_scene load_steps=22 format=3 uid="uid://cqvvc_hud_001"]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_hud_script"]
+[ext_resource type="FontFile" path="res://assets/font_game.ttf" id="2_font_game"]
+[ext_resource type="Texture2D" path="res://assets/ui/frame_player.png" id="3_frame_player"]
+[ext_resource type="Texture2D" path="res://assets/ui/frame_portrait.png" id="4_frame_portrait"]
+[ext_resource type="Texture2D" path="res://assets/ui/portrait_hero.png" id="5_portrait_hero"]
+[ext_resource type="Texture2D" path="res://assets/ui/bar_bg.png" id="6_bar_bg"]
+[ext_resource type="Texture2D" path="res://assets/ui/bar_player_hp.png" id="7_bar_player_hp"]
+[ext_resource type="Texture2D" path="res://assets/ui/frame_boss_hp.png" id="8_frame_boss"]
+[ext_resource type="Texture2D" path="res://assets/ui/bar_boss_hp.png" id="9_bar_boss_hp"]
+[ext_resource type="Texture2D" path="res://assets/ui/frame_skill_slot.png" id="10_frame_slot"]
+[ext_resource type="Texture2D" path="res://assets/ui/frame_modal.png" id="11_frame_modal"]
+[ext_resource type="Texture2D" path="res://assets/icons/skill_q.png" id="12_skill_q"]
+[ext_resource type="Texture2D" path="res://assets/icons/skill_e.png" id="13_skill_e"]
+[ext_resource type="Texture2D" path="res://assets/icons/skill_r.png" id="14_skill_r"]
+[ext_resource type="Texture2D" path="res://assets/icons/skill_dash.png" id="15_skill_dash"]
+[ext_resource type="Texture2D" path="res://assets/ui/banner_warning.png" id="16_banner_warning"]
+[ext_resource type="Texture2D" path="res://assets/ui/frame_dps.png" id="17_frame_dps"]
+[ext_resource type="Texture2D" path="res://assets/icons/icon_bag_btn.png" id="18_icon_bag"]
+[ext_resource type="Texture2D" path="res://assets/icons/skill_f.png" id="19_skill_f"]
+[ext_resource type="Texture2D" path="res://assets/icons/skill_space.png" id="20_skill_space"]
+[ext_resource type="Texture2D" path="res://assets/ui/bar_player_mp.png" id="21_bar_player_mp"]
+[ext_resource type="Texture2D" path="res://assets/ui/game_logo.png" id="22_game_logo"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_hud_script")
+
+[node name="PlayerPanel" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 380.0
+offset_bottom = 150.0
+
+[node name="FrameBg" type="NinePatchRect" parent="PlayerPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_frame_player")
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+
+[node name="PortraitBorder" type="TextureRect" parent="PlayerPanel"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 22.0
+offset_right = 84.0
+offset_bottom = 92.0
+texture = ExtResource("4_frame_portrait")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HeroPortrait" type="TextureRect" parent="PlayerPanel/PortraitBorder"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -28.0
+offset_top = -28.0
+offset_right = 28.0
+offset_bottom = 28.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_portrait_hero")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="PlayerName" type="Label" parent="PlayerPanel"]
+layout_mode = 0
+offset_left = 94.0
+offset_top = 12.0
+offset_right = 360.0
+offset_bottom = 30.0
+theme_override_colors/font_color = Color(1, 0.85, 0.45, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 14
+text = "Dũng Sĩ Hư Không"
+
+[node name="PlayerHpBar" type="TextureProgressBar" parent="PlayerPanel"]
+layout_mode = 0
+offset_left = 94.0
+offset_top = 34.0
+offset_right = 360.0
+offset_bottom = 50.0
+value = 100.0
+nine_patch_stretch = true
+texture_under = ExtResource("6_bar_bg")
+texture_progress = ExtResource("7_bar_player_hp")
+
+[node name="PlayerHpLabel" type="Label" parent="PlayerPanel/PlayerHpBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 10
+text = "800 / 800"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerMpBar" type="TextureProgressBar" parent="PlayerPanel"]
+layout_mode = 0
+offset_left = 94.0
+offset_top = 54.0
+offset_right = 360.0
+offset_bottom = 70.0
+value = 100.0
+nine_patch_stretch = true
+texture_under = ExtResource("6_bar_bg")
+texture_progress = ExtResource("21_bar_player_mp")
+
+[node name="PlayerMpLabel" type="Label" parent="PlayerPanel/PlayerMpBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 10
+text = "100 / 100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatsInfo" type="Label" parent="PlayerPanel"]
+layout_mode = 0
+offset_left = 94.0
+offset_top = 74.0
+offset_right = 360.0
+offset_bottom = 140.0
+theme_override_colors/font_color = Color(0.85, 0.9, 0.98, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 10
+text = "Vũ khí: Đoản Kiếm Thép"
+autowrap_mode = 2
+
+[node name="BossPanel" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -320.0
+offset_top = 28.0
+offset_right = 320.0
+offset_bottom = 82.0
+grow_horizontal = 2
+
+[node name="BossFrame" type="TextureRect" parent="BossPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_frame_boss")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BossInfo" type="Label" parent="BossPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = -22.0
+offset_right = 300.0
+offset_bottom = -2.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.45, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 13
+text = "QUÁI VẬT VĨNH CỬU - TẦNG 1"
+horizontal_alignment = 1
+
+[node name="BossHpBar" type="TextureProgressBar" parent="BossPanel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -265.0
+offset_top = -28.0
+offset_right = 265.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+value = 100.0
+nine_patch_stretch = true
+texture_under = ExtResource("6_bar_bg")
+texture_progress = ExtResource("9_bar_boss_hp")
+
+[node name="BossHpLabel" type="Label" parent="BossPanel/BossHpBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 11
+text = "60,000 / 60,000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WarningBanner" type="NinePatchRect" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -260.0
+offset_top = 78.0
+offset_right = 260.0
+offset_bottom = 120.0
+grow_horizontal = 2
+texture = ExtResource("16_banner_warning")
+patch_margin_left = 26
+patch_margin_top = 8
+patch_margin_right = 26
+patch_margin_bottom = 8
+
+[node name="SkillWarning" type="Label" parent="WarningBanner"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.95, 0.25, 1)
+theme_override_colors/font_outline_color = Color(0.15, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DpsPanel" type="NinePatchRect" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -250.0
+offset_top = 18.0
+offset_right = -18.0
+offset_bottom = 54.0
+grow_horizontal = 0
+texture = ExtResource("17_frame_dps")
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+
+[node name="DpsInfo" type="Label" parent="DpsPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_right = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 12
+text = "DPS: 0/s"
+vertical_alignment = 1
+
+[node name="ServerStatusPill" type="NinePatchRect" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -250.0
+offset_top = 58.0
+offset_right = -18.0
+offset_bottom = 88.0
+grow_horizontal = 0
+texture = ExtResource("17_frame_dps")
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+
+[node name="ServerStatusLabel" type="Label" parent="ServerStatusPill"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_right = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.3, 1.0, 0.6, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 11
+text = "🟢 CỔNG 8787 TRỰC TUYẾN"
+vertical_alignment = 1
+
+[node name="SkillBar" type="HBoxContainer" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -480.0
+offset_top = -82.0
+offset_right = 480.0
+offset_bottom = -26.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="SkillQ" type="NinePatchRect" parent="SkillBar"]
+custom_minimum_size = Vector2(152, 54)
+layout_mode = 2
+texture = ExtResource("10_frame_slot")
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="Margin" type="MarginContainer" parent="SkillBar/SkillQ"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="HBox" type="HBoxContainer" parent="SkillBar/SkillQ/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="IconQ" type="TextureRect" parent="SkillBar/SkillQ/Margin/HBox"]
+custom_minimum_size = Vector2(38, 38)
+layout_mode = 2
+texture = ExtResource("12_skill_q")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBox" type="VBoxContainer" parent="SkillBar/SkillQ/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="LabelQ" type="Label" parent="SkillBar/SkillQ/Margin/HBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.55, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 11
+text = "[1] Toàn Phong"
+
+[node name="StatusQ" type="Label" parent="SkillBar/SkillQ/Margin/HBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.85, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 10
+text = "18 MP • Sẵn Sàng"
+
+[node name="SkillE" type="NinePatchRect" parent="SkillBar"]
+custom_minimum_size = Vector2(152, 54)
+layout_mode = 2
+texture = ExtResource("10_frame_slot")
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="Margin" type="MarginContainer" parent="SkillBar/SkillE"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="HBox" type="HBoxContainer" parent="SkillBar/SkillE/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="IconE" type="TextureRect" parent="SkillBar/SkillE/Margin/HBox"]
+custom_minimum_size = Vector2(38, 38)
+layout_mode = 2
+texture = ExtResource("13_skill_e")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBox" type="VBoxContainer" parent="SkillBar/SkillE/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="LabelE" type="Label" parent="SkillBar/SkillE/Margin/HBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.55, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 11
+text = "[2] Trảm Hồn"
+
+[node name="StatusE" type="Label" parent="SkillBar/SkillE/Margin/HBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.5, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 10
+text = "20 MP • Sẵn Sàng"
+
+[node name="SkillR" type="NinePatchRect" parent="SkillBar"]
+custom_minimum_size = Vector2(152, 54)
+layout_mode = 2
+texture = ExtResource("10_frame_slot")
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="Margin" type="MarginContainer" parent="SkillBar/SkillR"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="HBox" type="HBoxContainer" parent="SkillBar/SkillR/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="IconR" type="TextureRect" parent="SkillBar/SkillR/Margin/HBox"]
+custom_minimum_size = Vector2(38, 38)
+layout_mode = 2
+texture = ExtResource("14_skill_r")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBox" type="VBoxContainer" parent="SkillBar/SkillR/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="LabelR" type="Label" parent="SkillBar/SkillR/Margin/HBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.55, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 11
+text = "[3] Thần Kiếm"
+
+[node name="StatusR" type="Label" parent="SkillBar/SkillR/Margin/HBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 10
+text = "40 MP • Sẵn Sàng"
+
+[node name="SkillF" type="NinePatchRect" parent="SkillBar"]
+custom_minimum_size = Vector2(152, 54)
+layout_mode = 2
+texture = ExtResource("10_frame_slot")
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="Margin" type="MarginContainer" parent="SkillBar/SkillF"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="HBox" type="HBoxContainer" parent="SkillBar/SkillF/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="IconF" type="TextureRect" parent="SkillBar/SkillF/Margin/HBox"]
+custom_minimum_size = Vector2(38, 38)
+layout_mode = 2
+texture = ExtResource("19_skill_f")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBox" type="VBoxContainer" parent="SkillBar/SkillF/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="LabelF" type="Label" parent="SkillBar/SkillF/Margin/HBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.55, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 11
+text = "[4] Thánh Khiên"
+
+[node name="StatusF" type="Label" parent="SkillBar/SkillF/Margin/HBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 10
+text = "25 MP • Sẵn Sàng"
+
+[node name="SkillSpace" type="NinePatchRect" parent="SkillBar"]
+custom_minimum_size = Vector2(152, 54)
+layout_mode = 2
+texture = ExtResource("10_frame_slot")
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="Margin" type="MarginContainer" parent="SkillBar/SkillSpace"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="HBox" type="HBoxContainer" parent="SkillBar/SkillSpace/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="IconSpace" type="TextureRect" parent="SkillBar/SkillSpace/Margin/HBox"]
+custom_minimum_size = Vector2(38, 38)
+layout_mode = 2
+texture = ExtResource("20_skill_space")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBox" type="VBoxContainer" parent="SkillBar/SkillSpace/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="LabelSpace" type="Label" parent="SkillBar/SkillSpace/Margin/HBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.55, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 11
+text = "[5] Lôi Phạt"
+
+[node name="StatusSpace" type="Label" parent="SkillBar/SkillSpace/Margin/HBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 10
+text = "35 MP • Sẵn Sàng"
+
+[node name="SkillDash" type="NinePatchRect" parent="SkillBar"]
+custom_minimum_size = Vector2(152, 54)
+layout_mode = 2
+texture = ExtResource("10_frame_slot")
+patch_margin_left = 10
+patch_margin_top = 10
+patch_margin_right = 10
+patch_margin_bottom = 10
+
+[node name="Margin" type="MarginContainer" parent="SkillBar/SkillDash"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="HBox" type="HBoxContainer" parent="SkillBar/SkillDash/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="IconDash" type="TextureRect" parent="SkillBar/SkillDash/Margin/HBox"]
+custom_minimum_size = Vector2(38, 38)
+layout_mode = 2
+texture = ExtResource("15_skill_dash")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBox" type="VBoxContainer" parent="SkillBar/SkillDash/Margin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="LabelDash" type="Label" parent="SkillBar/SkillDash/Margin/HBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.55, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 11
+text = "[Space] Lướt"
+
+[node name="StatusDash" type="Label" parent="SkillBar/SkillDash/Margin/HBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 1, 0.7, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 10
+text = "6 MP • Sẵn Sàng"
+
+[node name="BtnBag" type="Button" parent="."]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -160.0
+offset_top = -70.0
+offset_right = -20.0
+offset_bottom = -26.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 13
+text = "  Balo [B]"
+icon = ExtResource("18_icon_bag")
+expand_icon = true
+
+[node name="ModalRoot" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BackdropDimmer" type="ColorRect" parent="ModalRoot"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0.04, 0.08, 0.8)
+
+[node name="ModalPanel" type="NinePatchRect" parent="ModalRoot"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -390.0
+offset_top = -260.0
+offset_right = 390.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_frame_modal")
+patch_margin_left = 16
+patch_margin_top = 64
+patch_margin_right = 16
+patch_margin_bottom = 16
+
+[node name="Margin" type="MarginContainer" parent="ModalRoot/ModalPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="ModalRoot/ModalPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="HeaderHBox" type="HBoxContainer" parent="ModalRoot/ModalPanel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="BtnTabBag" type="Button" parent="ModalRoot/ModalPanel/Margin/VBox/HeaderHBox"]
+custom_minimum_size = Vector2(130, 38)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 14
+text = "Túi Đồ"
+
+[node name="BtnTabForge" type="Button" parent="ModalRoot/ModalPanel/Margin/VBox/HeaderHBox"]
+custom_minimum_size = Vector2(130, 38)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 14
+text = "Lò Rèn"
+
+[node name="BtnTabLeaderboard" type="Button" parent="ModalRoot/ModalPanel/Margin/VBox/HeaderHBox"]
+custom_minimum_size = Vector2(140, 38)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 14
+text = "BXH Đỉnh Cao"
+
+[node name="ControlSpacer" type="Control" parent="ModalRoot/ModalPanel/Margin/VBox/HeaderHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ModalLogo" type="TextureRect" parent="ModalRoot/ModalPanel/Margin/VBox/HeaderHBox"]
+texture_filter = 2
+custom_minimum_size = Vector2(110, 36)
+layout_mode = 2
+texture = ExtResource("22_game_logo")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BtnClose" type="Button" parent="ModalRoot/ModalPanel/Margin/VBox/HeaderHBox"]
+custom_minimum_size = Vector2(90, 38)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 14
+text = "Đóng [Esc]"
+
+[node name="TabBag" type="VBoxContainer" parent="ModalRoot/ModalPanel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="BagHeader" type="HBoxContainer" parent="ModalRoot/ModalPanel/Margin/VBox/TabBag"]
+layout_mode = 2
+
+[node name="BagCapacityLabel" type="Label" parent="ModalRoot/ModalPanel/Margin/VBox/TabBag/BagHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.4, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 12
+text = "Sức chứa túi đồ: 1 / 20 ô"
+
+[node name="EquipmentSummaryLabel" type="Label" parent="ModalRoot/ModalPanel/Margin/VBox/TabBag/BagHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.4, 0.85, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 2
+text = "Trang bị: Vũ khí | Giáp trụ | Bùa nhẫn"
+
+[node name="BagScroll" type="ScrollContainer" parent="ModalRoot/ModalPanel/Margin/VBox/TabBag"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ItemList" type="VBoxContainer" parent="ModalRoot/ModalPanel/Margin/VBox/TabBag/BagScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="TabForge" type="HBoxContainer" parent="ModalRoot/ModalPanel/Margin/VBox"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 24
+
+[node name="EnhanceCol" type="VBoxContainer" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="EnhanceTitle" type="Label" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge/EnhanceCol"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.45, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 15
+text = "Cường Hóa Vũ Khí"
+
+[node name="WeaponCard" type="PanelContainer" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge/EnhanceCol"]
+layout_mode = 2
+
+[node name="CardMargin" type="MarginContainer" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge/EnhanceCol/WeaponCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 10
+
+[node name="HBox" type="HBoxContainer" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge/EnhanceCol/WeaponCard/CardMargin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="WpnIcon" type="TextureRect" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge/EnhanceCol/WeaponCard/CardMargin/HBox"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBox" type="VBoxContainer" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge/EnhanceCol/WeaponCard/CardMargin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="WpnName" type="Label" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge/EnhanceCol/WeaponCard/CardMargin/HBox/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 14
+text = "Đoản Kiếm Thép"
+
+[node name="WpnStats" type="Label" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge/EnhanceCol/WeaponCard/CardMargin/HBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.85, 0.95, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 12
+text = "Sát thương: 25 - 40"
+
+[node name="NextStats" type="Label" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge/EnhanceCol"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.9, 0.5, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 13
+text = "Cấp tiếp theo: +15% Sát thương"
+
+[node name="CostLabel" type="Label" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge/EnhanceCol"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.75, 0.35, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 13
+text = "Nguyên liệu yêu cầu:"
+
+[node name="CostContainer" type="VBoxContainer" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge/EnhanceCol"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="BtnUpgrade" type="Button" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge/EnhanceCol"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 14
+text = "CƯỜNG HÓA VŨ KHÍ"
+
+[node name="CraftCol" type="VBoxContainer" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="CraftTitle" type="Label" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge/CraftCol"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.45, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 15
+text = "Chế Tạo Trang Bị"
+
+[node name="CraftScroll" type="ScrollContainer" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge/CraftCol"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CraftList" type="VBoxContainer" parent="ModalRoot/ModalPanel/Margin/VBox/TabForge/CraftCol/CraftScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="TabLeaderboard" type="VBoxContainer" parent="ModalRoot/ModalPanel/Margin/VBox"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="LbHeader" type="HBoxContainer" parent="ModalRoot/ModalPanel/Margin/VBox/TabLeaderboard"]
+layout_mode = 2
+
+[node name="LbTitle" type="Label" parent="ModalRoot/ModalPanel/Margin/VBox/TabLeaderboard/LbHeader"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.4, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 13
+text = "BẢNG XẾP HẠNG ANH HÙNG (TOP 10 ĐỈNH CAO)"
+
+[node name="ControlSpacerLb" type="Control" parent="ModalRoot/ModalPanel/Margin/VBox/TabLeaderboard/LbHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BtnSyncCloud" type="Button" parent="ModalRoot/ModalPanel/Margin/VBox/TabLeaderboard/LbHeader"]
+custom_minimum_size = Vector2(150, 32)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 11
+text = "Đồng Bộ Đám Mây"
+
+[node name="LeaderboardScroll" type="ScrollContainer" parent="ModalRoot/ModalPanel/Margin/VBox/TabLeaderboard"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LeaderboardList" type="VBoxContainer" parent="ModalRoot/ModalPanel/Margin/VBox/TabLeaderboard/LeaderboardScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="TitleScreen" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleDimmer" type="ColorRect" parent="TitleScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.02, 0.05, 0.92)
+
+[node name="LogoRect" type="TextureRect" parent="TitleScreen"]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -380.0
+offset_top = 20.0
+offset_right = 380.0
+offset_bottom = 330.0
+grow_horizontal = 2
+texture = ExtResource("22_game_logo")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GuideBox" type="PanelContainer" parent="TitleScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = 40.0
+offset_right = 340.0
+offset_bottom = 210.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GuideMargin" type="MarginContainer" parent="TitleScreen/GuideBox"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 14
+
+[node name="GuideVBox" type="VBoxContainer" parent="TitleScreen/GuideBox/GuideMargin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="GuideTitle" type="Label" parent="TitleScreen/GuideBox/GuideMargin/GuideVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.4, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 14
+text = "HƯỚNG DẪN CHIẾN ĐẤU & KỸ NĂNG"
+horizontal_alignment = 1
+
+[node name="GuideText" type="Label" parent="TitleScreen/GuideBox/GuideMargin/GuideVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.92, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 11
+text = "• WASD / Mũi tên: Di chuyển linh hoạt mượt mà
+• Chuột Trái / [J]: Trảm kích liên hoàn 3 đòn (Trúng đích hồi 12 MP)
+• [Space] / [Shift]: Lướt né chiêu tốc biến (Bất tử & hủy động tác thừa)
+• [1][2][3][4][5]: Kỹ năng: Toàn Phong, Trảm Hồn, Thần Kiếm, Thánh Khiên, Lôi Phạt
+• [B]: Mở Balo, Lò Rèn & Bảng Xếp Hạng Đỉnh Cao"
+
+[node name="BtnStartGame" type="Button" parent="TitleScreen"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -170.0
+offset_top = -125.0
+offset_right = 170.0
+offset_bottom = -65.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_font_game")
+theme_override_font_sizes/font_size = 18
+text = "⚔ BẮT ĐẦU CHIẾN ĐẤU"
+
+

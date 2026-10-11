@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://cqvvc_monster_001"]
+
+[ext_resource type="Script" path="res://scripts/monster.gd" id="1_monster_script"]
+[ext_resource type="Texture2D" path="res://assets/monsters/skeleton/walk.png" id="2_walk_tex"]
+[ext_resource type="FontFile" path="res://assets/font_game.ttf" id="3_font_game"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_monster"]
+radius = 14.0
+
+[node name="Monster" type="CharacterBody2D" groups=["enemies", "monsters"]]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("1_monster_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 14)
+shape = SubResource("CircleShape2D_monster")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_walk_tex")
+hframes = 9
+vframes = 4
+frame = 18
+
+[node name="HpBar" type="ProgressBar" parent="."]
+offset_left = -22.0
+offset_top = -34.0
+offset_right = 22.0
+offset_bottom = -29.0
+value = 100.0
+show_percentage = false
+
+[node name="NameLabel" type="Label" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -60.0
+offset_top = -48.0
+offset_right = 60.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("3_font_game")
+theme_override_font_sizes/font_size = 10
+text = "Quái Vật"
+horizontal_alignment = 1
+vertical_alignment = 1

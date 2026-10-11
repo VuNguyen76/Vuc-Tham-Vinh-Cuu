@@ -1,0 +1,23 @@
+=======================================================
+   VỰC THẲM VĨNH CỬU: DI SẢN HƯ KHÔNG (v1.0.0)
+   Eternal Abyss: Void's Legacy - Official Release
+=======================================================
+
+HƯỚNG DẪN BẮT ĐẦU:
+1. Nhấp đúp vào tệp "CHOI_GAME.bat" để khởi động.
+2. Trình khởi chạy sẽ tự động mở Server đồng bộ và khởi chạy game.
+
+ĐIỀU KHIỂN & PHÍM BẤM:
+- WASD / Mũi tên: Di chuyển dũng sĩ
+- Chuột Trái / [J]: Trảm kích liên hoàn 3 đòn (Trúng đích hồi +15 MP)
+- [Space] / [Shift]: Lướt né chiêu tốc biến (Kháng sát thương & hủy động tác)
+- [1] / [Q]: Toàn Phong (Whirlwind) - Xoay kiếm quét sạch quái vật
+- [2] / [E]: Trảm Hồn (Void Piercer) - Sóng kiếm hư không xuyên thấu
+- [3] / [R]: Thần Kiếm (Starfall) - Cự kiếm thiên giới giáng sấm sét
+- [4] / [F]: Thánh Khiên (Divine Aegis) - Khiên thánh bất tử 3s & hồi máu
+- [5]: Lôi Phạt (Thunder Tempest) - Giáng sấm sét toàn sàn đấu
+- [B]: Mở Balo, Lò Rèn & Bảng Xếp Hạng Đỉnh Cao
+- [Esc]: Đóng menu / Thoát
+
+Chúc bạn có những giờ phút chiến đấu thăng hoa!
+=======================================================
