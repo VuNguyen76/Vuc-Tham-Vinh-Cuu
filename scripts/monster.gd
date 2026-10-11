@@ -212,6 +212,14 @@ func _perform_attack(attack_dir: Vector2) -> void:
 	attack_timer = attack_cooldown
 	velocity = Vector2.ZERO
 
+	# Ensure monster faces directly towards target player during attack
+	if target_player and is_instance_valid(target_player):
+		attack_dir = (target_player.global_position - global_position).normalized()
+	if abs(attack_dir.x) > abs(attack_dir.y):
+		current_row = 3 if attack_dir.x > 0 else 1
+	else:
+		current_row = 2 if attack_dir.y > 0 else 0
+
 	if tex_slash:
 		sprite.texture = tex_slash
 		sprite.hframes = 6

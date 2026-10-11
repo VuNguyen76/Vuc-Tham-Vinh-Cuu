@@ -12,22 +12,52 @@ def resolve_path(rel_path):
         return p
     return None
 
+def normalize_layer(layer, target_w, target_h):
+    if layer.size == (target_w, target_h):
+        return layer
+    cols = target_w // 64
+    rows = target_h // 64
+    cell_w = layer.width // cols
+    cell_h = layer.height // rows
+    if cell_w == 128 and cell_h == 128:
+        out = Image.new("RGBA", (target_w, target_h), (0, 0, 0, 0))
+        for r in range(rows):
+            for c in range(cols):
+                box = (c * 128 + 32, r * 128 + 32, c * 128 + 96, r * 128 + 96)
+                out.paste(layer.crop(box), (c * 64, r * 64))
+        return out
+    elif cell_w == 192 and cell_h == 192:
+        out = Image.new("RGBA", (target_w, target_h), (0, 0, 0, 0))
+        for r in range(rows):
+            for c in range(cols):
+                box = (c * 192 + 64, r * 192 + 64, c * 192 + 128, r * 192 + 128)
+                out.paste(layer.crop(box), (c * 64, r * 64))
+        return out
+    return layer.crop((0, 0, target_w, target_h))
+
 def composite_layers(layer_paths, target_size=None):
-    base_img = None
+    loaded = []
+    target_w, target_h = None, None
     for lp in layer_paths:
         full_p = resolve_path(lp)
         if not full_p:
             continue
         try:
-            layer = Image.open(full_p).convert("RGBA")
-            if base_img is None:
-                base_img = layer.copy()
-            else:
-                if layer.size != base_img.size:
-                    layer = layer.crop((0, 0, base_img.size[0], base_img.size[1]))
-                base_img.alpha_composite(layer)
+            im = Image.open(full_p).convert("RGBA")
+            loaded.append(im)
+            if im.size[1] == 256:
+                target_w, target_h = im.size
         except Exception as e:
             print(f"Error loading {full_p}: {e}")
+    if not loaded:
+        return None
+    if target_w is None:
+        target_w, target_h = loaded[0].size
+
+    base_img = Image.new("RGBA", (target_w, target_h), (0, 0, 0, 0))
+    for layer in loaded:
+        norm = normalize_layer(layer, target_w, target_h)
+        base_img.alpha_composite(norm)
     return base_img
 
 # Character Presets Definitions
@@ -46,6 +76,7 @@ PRESETS = {
                 "weapon/sword/arming/universal/fg/walk/steel.png",
             ],
             "slash": [
+                "weapon/sword/arming/attack_slash/bg/steel.png",
                 "cape/solid/bg/slash.png",
                 "body/bodies/male/slash.png",
                 "legs/armour/plate/male/slash.png",
@@ -56,6 +87,7 @@ PRESETS = {
                 "weapon/sword/arming/attack_slash/fg/steel.png",
             ],
             "thrust": [
+                "weapon/sword/longsword/attack_thrust/behind/longsword.png",
                 "cape/solid/bg/thrust.png",
                 "body/bodies/male/thrust.png",
                 "legs/armour/plate/male/thrust.png",
@@ -63,6 +95,7 @@ PRESETS = {
                 "torso/armour/plate/male/thrust.png",
                 "cape/solid/fg/thrust.png",
                 "hat/helmet/armet/adult/thrust.png",
+                "weapon/sword/longsword/attack_thrust/longsword.png",
             ],
             "spellcast": [
                 "cape/solid/bg/spellcast.png",
@@ -101,13 +134,16 @@ PRESETS = {
                 "weapon/sword/arming/universal/fg/walk/iron.png",
             ],
             "slash": [
+                "weapon/sword/arming/attack_slash/bg/iron.png",
                 "body/bodies/skeleton/slash.png",
                 "head/heads/skeleton/adult/slash.png",
                 "weapon/sword/arming/attack_slash/fg/iron.png",
             ],
             "thrust": [
+                "weapon/sword/longsword/attack_thrust/behind/longsword.png",
                 "body/bodies/skeleton/thrust.png",
                 "head/heads/skeleton/adult/thrust.png",
+                "weapon/sword/longsword/attack_thrust/longsword.png",
             ],
             "hurt": [
                 "body/bodies/skeleton/hurt.png",
@@ -161,6 +197,7 @@ PRESETS = {
                 "weapon/sword/arming/universal/fg/walk/iron.png",
             ],
             "slash": [
+                "weapon/sword/arming/attack_slash/bg/iron.png",
                 "body/bodies/muscular/slash.png",
                 "legs/pants/muscular/slash.png",
                 "torso/armour/leather/male/slash.png",
@@ -168,10 +205,12 @@ PRESETS = {
                 "weapon/sword/arming/attack_slash/fg/iron.png",
             ],
             "thrust": [
+                "weapon/sword/longsword/attack_thrust/behind/longsword.png",
                 "body/bodies/muscular/thrust.png",
                 "legs/pants/muscular/thrust.png",
                 "torso/armour/leather/male/thrust.png",
                 "head/heads/orc/male/thrust.png",
+                "weapon/sword/longsword/attack_thrust/longsword.png",
             ],
             "hurt": [
                 "body/bodies/muscular/hurt.png",
@@ -198,15 +237,18 @@ PRESETS = {
                 "weapon/sword/arming/universal/fg/walk/bronze.png",
             ],
             "slash": [
+                "weapon/sword/arming/attack_slash/bg/bronze.png",
                 "body/bodies/child/slash.png",
                 "legs/shorts/shorts/male/slash.png",
                 "head/heads/goblin/adult/slash.png",
                 "weapon/sword/arming/attack_slash/fg/bronze.png",
             ],
             "thrust": [
+                "weapon/sword/longsword/attack_thrust/behind/longsword.png",
                 "body/bodies/child/thrust.png",
                 "legs/shorts/shorts/male/thrust.png",
                 "head/heads/goblin/adult/thrust.png",
+                "weapon/sword/longsword/attack_thrust/longsword.png",
             ],
             "hurt": [
                 "body/bodies/child/hurt.png",
@@ -232,6 +274,7 @@ PRESETS = {
                 "weapon/sword/arming/universal/fg/walk/iron.png",
             ],
             "slash": [
+                "weapon/sword/arming/attack_slash/bg/iron.png",
                 "body/bodies/muscular/slash.png",
                 "legs/pantaloons/muscular/slash.png",
                 "head/heads/minotaur/male/slash.png",
@@ -239,10 +282,12 @@ PRESETS = {
                 "weapon/sword/arming/attack_slash/fg/iron.png",
             ],
             "thrust": [
+                "weapon/sword/longsword/attack_thrust/behind/longsword.png",
                 "body/bodies/muscular/thrust.png",
                 "legs/pantaloons/muscular/thrust.png",
                 "head/heads/minotaur/male/thrust.png",
                 "head/horns/curled/adult/thrust.png",
+                "weapon/sword/longsword/attack_thrust/longsword.png",
             ],
             "hurt": [
                 "body/bodies/muscular/hurt.png",

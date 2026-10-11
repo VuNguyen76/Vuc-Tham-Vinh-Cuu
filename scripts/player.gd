@@ -212,8 +212,7 @@ func _physics_process(delta: float) -> void:
 		return
 	elif (Input.is_key_pressed(KEY_2) or Input.is_key_pressed(KEY_E)) and cd_e <= 0.0 and not is_anim_skill:
 		is_attacking = false
-		var to_mouse = (get_global_mouse_position() - global_position).normalized()
-		var aim = to_mouse if to_mouse.length() > 0.1 else (move_dir if move_dir != Vector2.ZERO else _get_facing_vector())
+		var aim = get_combat_aim_direction(false, move_dir)
 		cast_void_piercer(aim)
 		return
 	elif (Input.is_key_pressed(KEY_3) or Input.is_key_pressed(KEY_R)) and cd_r <= 0.0 and not is_anim_skill:
@@ -229,10 +228,11 @@ func _physics_process(delta: float) -> void:
 		cast_thunder_tempest()
 		return
 
-	# Manual Left-Click Combo Attack
-	var wants_attack = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_key_pressed(KEY_J)
-	if wants_attack and not is_attacking and not is_anim_skill and attack_cooldown <= 0.0:
-		var aim_dir = (get_global_mouse_position() - global_position).normalized()
+	# Manual Combo Attack (Left Click or Key J)
+	var is_mouse_atk = Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+	var is_key_atk = Input.is_key_pressed(KEY_J)
+	if (is_mouse_atk or is_key_atk) and not is_attacking and not is_anim_skill and attack_cooldown <= 0.0:
+		var aim_dir = get_combat_aim_direction(is_mouse_atk, move_dir)
 		_perform_combo_attack(aim_dir)
 
 	# Movement execution (allows 75% speed movement while swinging weapon)
@@ -325,6 +325,8 @@ func get_total_crit_chance() -> float:
 	return clampf(crit, 0.0, 0.85)
 
 func _update_facing_from_vector(v: Vector2) -> void:
+	if v.length_squared() < 0.0001:
+		return
 	if abs(v.x) > abs(v.y):
 		current_row = 3 if v.x > 0 else 1
 	else:
@@ -337,6 +339,58 @@ func _get_facing_vector() -> Vector2:
 		2: return Vector2.DOWN
 		3: return Vector2.RIGHT
 	return Vector2.DOWN
+
+func get_combat_aim_direction(is_mouse_attack: bool, move_dir: Vector2 = Vector2.ZERO) -> Vector2:
+	var enemies = _get_all_enemies()
+	var mouse_pos = get_global_mouse_position()
+	var to_mouse = (mouse_pos - global_position).normalized()
+
+	# 1. Direct cursor targeting (mouse clicked near an enemy within 180px)
+	if is_mouse_attack:
+		var best_cursor_enemy: Node2D = null
+		var min_cursor_dist = 180.0
+		for e in enemies:
+			if is_instance_valid(e) and not e.get("is_dead"):
+				var d = mouse_pos.distance_to(e.global_position)
+				if d < min_cursor_dist:
+					min_cursor_dist = d
+					best_cursor_enemy = e
+		if best_cursor_enemy:
+			return (best_cursor_enemy.global_position - global_position).normalized()
+
+	# 2. Smart auto-targeting nearest living enemy within combat range (380px)
+	var best_enemy: Node2D = null
+	var best_score: float = 999999.0
+	for e in enemies:
+		if is_instance_valid(e) and not e.get("is_dead"):
+			var to_e = e.global_position - global_position
+			var dist = to_e.length()
+			if dist <= 380.0:
+				var score = dist
+				# If player is moving, heavily prioritize enemies in front of the movement direction
+				if move_dir != Vector2.ZERO:
+					var dot = move_dir.dot(to_e.normalized())
+					if dot > 0.1:
+						score -= dot * 140.0
+					else:
+						score += 180.0
+				elif is_mouse_attack and to_mouse.length() > 0.1:
+					var dot = to_mouse.dot(to_e.normalized())
+					if dot > 0.1:
+						score -= dot * 100.0
+				if score < best_score:
+					best_score = score
+					best_enemy = e
+
+	if best_enemy:
+		return (best_enemy.global_position - global_position).normalized()
+
+	# 3. Fallbacks: Mouse aim, movement direction, or current facing direction
+	if is_mouse_attack and to_mouse.length() > 0.1:
+		return to_mouse
+	if move_dir != Vector2.ZERO:
+		return move_dir
+	return _get_facing_vector()
 
 func _set_lpc_texture(tex: Texture2D, hf: int, vf: int) -> void:
 	if sprite.texture != tex:
@@ -394,6 +448,7 @@ func _perform_combo_attack(aim_dir: Vector2) -> void:
 		0:
 			# Hit 1: Downward Slash (LPC slash.png: 6 frames)
 			_set_lpc_texture(TEX_SLASH, 6, 4)
+			velocity = aim_dir * 80.0
 			for f in range(6):
 				sprite.frame = current_row * 6 + f
 				if f == 3: # Apex hit frame
@@ -401,10 +456,12 @@ func _perform_combo_attack(aim_dir: Vector2) -> void:
 					GameManager.play_sound("sword_slash")
 					GameManager.trigger_screen_shake(3.0, 0.1)
 				await get_tree().create_timer(0.04).timeout
+			velocity = Vector2.ZERO
 
 		1:
 			# Hit 2: Upward Backhand Slash (LPC slash.png: 6 frames)
 			_set_lpc_texture(TEX_SLASH, 6, 4)
+			velocity = aim_dir * 95.0
 			for f in range(6):
 				sprite.frame = current_row * 6 + f
 				if f == 3: # Apex hit frame
@@ -412,6 +469,7 @@ func _perform_combo_attack(aim_dir: Vector2) -> void:
 					GameManager.play_sound("sword_slash")
 					GameManager.trigger_screen_shake(4.5, 0.12)
 				await get_tree().create_timer(0.04).timeout
+			velocity = Vector2.ZERO
 
 		2:
 			# Hit 3: Finisher Thrust Cleave (LPC thrust.png: 8 frames)
@@ -532,6 +590,8 @@ func cast_whirlwind() -> void:
 					e.take_damage(base_dmg * 0.65, randf() < 0.2, player_id, e.global_position)
 			await get_tree().create_timer(0.04).timeout
 
+	var finish_dir = get_combat_aim_direction(false, Vector2.ZERO)
+	_update_facing_from_vector(finish_dir)
 	_set_lpc_texture(TEX_WALK, 9, 4)
 	sprite.frame = current_row * 9 + 0
 	is_anim_skill = false
@@ -603,10 +663,16 @@ func cast_starfall_ultimate() -> void:
 	_find_boss()
 
 	var target_pos = boss_target.global_position if (boss_target and is_instance_valid(boss_target)) else get_global_mouse_position()
+	if not boss_target or not is_instance_valid(boss_target):
+		var enemies = _get_all_enemies()
+		if enemies.size() > 0:
+			target_pos = enemies[0].global_position
+
+	var to_target = (target_pos - global_position).normalized()
+	_update_facing_from_vector(to_target)
 
 	# Chanting pose (spellcast.png)
 	_set_lpc_texture(TEX_SPELLCAST, 7, 4)
-	current_row = 2
 	for f in range(5):
 		sprite.frame = current_row * 7 + f
 		await get_tree().create_timer(0.045).timeout
@@ -748,8 +814,10 @@ func cast_thunder_tempest() -> void:
 	cd_space = max_cd_space
 	is_anim_skill = true
 
+	var target_dir = get_combat_aim_direction(false, Vector2.ZERO)
+	_update_facing_from_vector(target_dir)
+
 	_set_lpc_texture(TEX_SPELLCAST, 7, 4)
-	current_row = 2
 	sprite.frame = current_row * 7 + 3
 	visual_root.modulate = Color(1.2, 2.0, 3.0)
 
